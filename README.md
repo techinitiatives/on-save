@@ -58,4 +58,4 @@ To use `on-save`, create a `.on-save.json` file at the root of your project. The
 
 ## License
 
-MIT
+Who cares?
