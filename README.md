@@ -3,7 +3,6 @@
   <br />
   <img src="https://s3.amazonaws.com/on-save/on-save-logo-with-tagline.svg" alt="on-save: Run a shell command when you save a file" width="602" height="87" />
   <br />
-  <br />
 </p>
 
 ## Installation
