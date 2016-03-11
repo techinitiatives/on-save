@@ -13,9 +13,9 @@ apm install on-save
 
 ## Usage
 
-Create a `.on-save.json` file at the root of you project.
+Create an `.on-save.json` file at the root of you project.
 
-For example, if you want to babelify every `.js` files from `src` to `lib`:
+For example, if you want to babelify every `.js` file from `src` to `lib`:
 
 ```javascript
 [
@@ -45,16 +45,16 @@ Finally, if you use [nvm](https://github.com/creationix/nvm) for your Node insta
 
 ## Configuration file
 
-To use `on-save`, create a `.on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
+To use `on-save`, create an `.on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
 
-- `srcDir` *(default: `'.'`)*: Directory containing the files you want to track.
-- `destDir` *(default: `'.'`)*: In case you want to output some files, the directory where files are written.
-- `files`: The files you want to track. You would probably want to use a glob, we use [minimatch](https://github.com/isaacs/minimatch) to select the files.
-- `command`: The command to execute. The project path will be the current working directory and you can use these variables:
+- `srcDir` *(default: `'.'`)*: The source directory.
+- `destDir` *(default: `'.'`)*: The destination directory.
+- `files`: The files you want to track. You can use a glob, see [minimatch](https://github.com/isaacs/minimatch).
+- `command`: The command to execute. You can use these variables:
   - `${srcFile}`: The input file.
   - `${destFile}`: The output file.
   - `${destFileWithoutExtension}`: The output file without the extension.
 
 ## License
 
-Who cares?
+MIT

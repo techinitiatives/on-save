@@ -16,7 +16,7 @@
     "shell"
   ],
   "repository": "https://github.com/mvila/on-save",
-  "license": "Whatever",
+  "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
