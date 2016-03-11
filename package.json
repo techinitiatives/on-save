@@ -1,6 +1,6 @@
 {
   "name": "on-save",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Run a shell command when you save a file",
   "keywords": [
     "save",
