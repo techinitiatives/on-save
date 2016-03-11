@@ -7,10 +7,10 @@
     "file",
     "run",
     "command",
-    "trigger",
-    "hook",
     "watch",
     "watcher",
+    "trigger",
+    "hook",
     "track",
     "execute",
     "shell"
