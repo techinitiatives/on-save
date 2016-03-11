@@ -5,14 +5,14 @@
   "keywords": [
     "save",
     "file",
+    "run",
+    "command",
     "trigger",
     "hook",
     "watch",
     "watcher",
     "track",
-    "run",
     "execute",
-    "command",
     "shell"
   ],
   "repository": "https://github.com/mvila/on-save",
