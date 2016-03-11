@@ -1,16 +1,27 @@
 {
   "name": "on-save",
-  "main": "./lib/on-save",
   "version": "0.1.1-0",
-  "description": "[development in progress]",
-  "keywords": [],
-  "activationCommands": {
-    "atom-workspace": "on-save:toggle"
-  },
+  "description": "Run a shell command when you save a file",
+  "keywords": [
+    "save",
+    "file",
+    "trigger",
+    "hook",
+    "watch",
+    "watcher",
+    "track",
+    "run",
+    "execute",
+    "command",
+    "shell"
+  ],
   "repository": "https://github.com/mvila/on-save",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "minimatch": "^3.0.0",
+    "mkdirp": "^0.5.1"
+  }
 }
