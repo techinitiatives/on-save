@@ -1,9 +1,8 @@
-# ![on-save](https://s3.amazonaws.com/on-save/on-save-logo.svg)
-
+![on-save](https://s3.amazonaws.com/on-save/on-save-logo-with-tagline.svg)
 
 ## Why?
 
-Because it is easier than using a watcher (--watch).
+Because it is easier than using a watcher (`--watch`).
 
 ## Installation
 
