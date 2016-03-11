@@ -41,7 +41,7 @@ In case your Babel CLI is local, maybe you would do something like this:
 ]
 ```
 
-Finally, if you use `nvm` for your Node installation you would probably need a package like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
+Finally, if you use [nvm](https://github.com/creationix/nvm) for your Node installation you would probably need a package like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
 
 ## Configuration file
 
