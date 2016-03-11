@@ -1,4 +1,6 @@
-![on-save](https://s3.amazonaws.com/on-save/on-save-logo-with-tagline.svg)
+<p align="center">
+  <img src="https://s3.amazonaws.com/on-save/on-save-logo-with-tagline.svg" alt="on-save: Run a shell command when you save a file" />
+</p>
 
 ## Why?
 
