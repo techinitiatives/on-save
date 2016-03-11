@@ -4,7 +4,7 @@
 
 ## Why?
 
-Because it is easier than using a watcher (`--watch`).
+Because it is a lot easier than using a watcher (`--watch`).
 
 ## Installation
 
@@ -14,9 +14,9 @@ apm install on-save
 
 ## Quick start
 
-Create a '.on-save.json' file at the root of you project.
+Create a `.on-save.json` file at the root of you project.
 
-For example, if you want to babelify every .js files from 'src' to 'lib':
+For example, if you want to babelify every `.js` files from `src` to `lib`:
 
 ```javascript
 [
@@ -29,7 +29,7 @@ For example, if you want to babelify every .js files from 'src' to 'lib':
 ]
 ```
 
-In case your Babel CLI is local, maybe you would like to do something like this:
+In case your Babel CLI is local, maybe you would prefer to do something like this:
 
 ```javascript
 [
@@ -42,18 +42,19 @@ In case your Babel CLI is local, maybe you would like to do something like this:
 ]
 ```
 
-Finally, if you use `nvm` for your your node goodness you would probably need something like [000-project-shell-env](...);
+Finally, if you use `nvm` for your Node installation you would probably need something like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
 
 ## Configuration file
 
-To use `on-save`, just create a `on-save.json` file at the root of your project. The content should be an array of object with the following properties:
+To use `on-save`, create a `on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
 
-- `srcDir` *(default: '.')*: Directory containing the files you want to track.
-- `destDir` *(default: '.')*: In case you want to output some files, the directory where files are written.
-- `files`: The files you want to track. You would probably want to use a glob, we use [minimatch](...) to select the files.
-- `command`: The command to execute when you save a file matching the `files` property. The command runs with the project path as the current working directory and the following variables are available:
-  - srcFile: Input file path.
-  - destFile: Output file path.
+- `srcDir` *(default: `'.'`)*: Directory containing the files you want to track.
+- `destDir` *(default: `'.'`)*: In case you want to output some files, the directory where files are written.
+- `files`: The files you want to track. You would probably want to use a glob, we use [minimatch](https://github.com/isaacs/minimatch) to select the files.
+- `command`: The command to execute. The project path will be the current working directory and you can use these variables:
+  - `${srcFile}`: The input file path.
+  - `${destFile}`: The output file path.
+  - `${destFileWithoutExtension}`: The output file path without the extension.
 
 ## License
 
