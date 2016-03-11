@@ -25,7 +25,7 @@ For example, if you want to babelify every `.js` files from `src` to `lib`:
 ]
 ```
 
-In case your Babel CLI is local, maybe you would prefer to do something like this:
+In case your Babel CLI is local, maybe you would do something like this:
 
 ```javascript
 [
@@ -38,7 +38,7 @@ In case your Babel CLI is local, maybe you would prefer to do something like thi
 ]
 ```
 
-Finally, if you use `nvm` for your Node installation you would probably need something like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
+Finally, if you use `nvm` for your Node installation you would probably need a package like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
 
 ## Configuration file
 
