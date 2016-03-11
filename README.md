@@ -8,7 +8,7 @@
 apm install on-save
 ```
 
-## Quick start
+## Usage
 
 Create a `.on-save.json` file at the root of you project.
 
