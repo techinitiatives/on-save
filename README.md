@@ -45,7 +45,7 @@ Finally, if you use [nvm](https://github.com/creationix/nvm) for your Node insta
 
 ## Configuration file
 
-To use `on-save`, create an `.on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
+To use **on-save**, create an `.on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
 
 - `srcDir` *(default: `'.'`)*: The source directory.
 - `destDir` *(default: `'.'`)*: The destination directory.
