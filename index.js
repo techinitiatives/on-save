@@ -26,7 +26,10 @@ export default {
   handleDidSave(event) {
     let savedFilePath = event.path;
     let projectPath = this.getProjectPath(savedFilePath);
-    if (!projectPath) throw new Error('on-save: Unable to find the project path');
+    if (!projectPath) {
+      console.error('on-save: Unable to find the project path');
+      return;
+    }
     savedFilePath = pathModule.relative(projectPath, savedFilePath);
     let configs = this.loadConfigs(projectPath);
     if (!configs) return;
