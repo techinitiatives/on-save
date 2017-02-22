@@ -1,7 +1,7 @@
 'use babel';
 
-import fs from 'fs';
-import pathModule from 'path';
+import { existsSync, readFileSync } from 'fs';
+import { join, relative, dirname, extname } from 'path';
 import { exec } from 'child_process';
 import { CompositeDisposable } from 'atom';
 import minimatch from 'minimatch';
@@ -24,31 +24,30 @@ export default {
   },
 
   handleDidSave(event) {
-    let savedFilePath = event.path;
-    let projectPath = this.getProjectPath(savedFilePath);
-    if (!projectPath) {
-      console.error('on-save: Unable to find the project path');
-      return;
-    }
-    savedFilePath = pathModule.relative(projectPath, savedFilePath);
-    let configs = this.loadConfigs(projectPath);
-    if (!configs) return;
-    for (let config of configs) {
-      this.run({ projectPath, config, savedFilePath });
+    let savedFile = event.path;
+    const savedFileDir = dirname(savedFile);
+    const rootDir = this.findRootDir(savedFileDir);
+    if (!rootDir) return;
+    savedFile = relative(rootDir, savedFile);
+    const configs = this.loadConfigs(rootDir);
+    for (const config of configs) {
+      this.run({ rootDir, config, savedFile });
     }
   },
 
-  getProjectPath(path) {
-    let directories = atom.project.getDirectories();
-    for (let directory of directories) {
-      if (directory.contains(path)) return directory.getPath();
+  findRootDir(dir) {
+    if (existsSync(join(dir, CONFIGS_FILENAME))) return dir;
+    const parentDir = join(dir, '..');
+    if (parentDir === dir) {
+      return undefined;
+    } else {
+      return this.findRootDir(parentDir);
     }
   },
 
-  loadConfigs(projectPath) {
-    let path = pathModule.join(projectPath, CONFIGS_FILENAME);
-    if (!fs.existsSync(path)) return;
-    let configs = fs.readFileSync(path, 'utf8');
+  loadConfigs(rootDir) {
+    const configsFile = join(rootDir, CONFIGS_FILENAME);
+    let configs = readFileSync(configsFile, 'utf8');
     configs = JSON.parse(configs);
     if (!Array.isArray(configs)) configs = [configs];
     configs = configs.map((config) => this.normalizeConfig(config));
@@ -64,44 +63,46 @@ export default {
     return { srcDir, destDir, files, command };
   },
 
-  run({ projectPath, savedFilePath, config }) {
-    let matched = config.files.find((glob) => {
-      glob = pathModule.join(config.srcDir, glob);
-      return minimatch(savedFilePath, glob);
+  run({ rootDir, savedFile, config }) {
+    const matched = config.files.find((glob) => {
+      glob = join(config.srcDir, glob);
+      return minimatch(savedFile, glob);
     });
     if (!matched) return;
 
-    mkdirp.sync(pathModule.join(projectPath, config.destDir));
+    const srcFile = savedFile;
 
-    let srcFile = savedFilePath;
+    let destFile = relative(config.srcDir, savedFile);
+    destFile = join(config.destDir, destFile);
 
-    let destFile = pathModule.relative(config.srcDir, savedFilePath);
-    destFile = pathModule.join(config.destDir, destFile);
-    let extension = pathModule.extname(destFile);
-    let destFileWithoutExtension = destFile.substr(0, destFile.length - extension.length);
+    const extension = extname(destFile);
 
-    let command = this.resolveCommand(config.command, {
+    const destFileWithoutExtension = destFile.substr(0, destFile.length - extension.length);
+
+    mkdirp.sync(join(rootDir, dirname(destFile)));
+
+    const command = this.resolveCommand(config.command, {
       srcFile,
       destFile,
       destFileWithoutExtension
     });
-    let options = { cwd: projectPath, timeout: EXEC_TIMEOUT };
+    const options = { cwd: rootDir, timeout: EXEC_TIMEOUT };
     exec(command, options, (err, stdout, stderr) => {
       if (!err) {
         if (stdout) console.log(stdout.trim());
       } else {
-        let message = `on-save: An error occurred while running the command: ${command}`;
+        const message = `on-save: An error occurred while running the command: ${command}`;
         atom.notifications.addError(message, { detail: stderr, dismissable: true });
       }
     });
   },
 
   resolveCommand(command, vars) {
-    for (let key of Object.keys(vars)) {
-      let value = vars[key];
-      let regExp = new RegExp(`\\$\\{${key}\\}`, 'g');
+    for (const key of Object.keys(vars)) {
+      const value = vars[key];
+      const regExp = new RegExp(`\\$\\{${key}\\}`, 'g');
       command = command.replace(regExp, value);
     }
     return command;
   }
-}
+};

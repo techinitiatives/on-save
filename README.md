@@ -15,13 +15,13 @@ apm install on-save
 
 Create an `.on-save.json` file at the root of you project.
 
-For example, if you want to babelify every `.js` file from `src` to `lib`:
+For example, if you want to babelify every `.js` file from `src` to `dist`:
 
 ```javascript
 [
   {
     "srcDir": "src",
-    "destDir": "lib",
+    "destDir": "dist",
     "files": "**/*.js",
     "command": "babel ${srcFile} --out-file ${destFile}"
   }
@@ -34,14 +34,12 @@ In case your Babel CLI is local, maybe you would do something like this:
 [
   {
     "srcDir": "src",
-    "destDir": "lib",
+    "destDir": "dist",
     "files": "**/*.js",
     "command": "./node_modules/.bin/babel ${srcFile} --out-file ${destFile}"
   }
 ]
 ```
-
-Finally, if you use [nvm](https://github.com/creationix/nvm) for your Node installation you would probably need a package like [000-project-shell-env](https://atom.io/packages/000-project-shell-env).
 
 ## Configuration file
 

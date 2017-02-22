@@ -1,0 +1,6 @@
+{
+  "extends": ["next"],
+  "globals": {
+    "atom": true
+  }
+}
