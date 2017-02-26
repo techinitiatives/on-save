@@ -13,9 +13,9 @@ apm install on-save
 
 ## Usage
 
-Create an `.on-save.json` file at the root of you project.
+Create an `.on-save.json` file at the root of your project (or anywhere in the path of the file you are saving).
 
-For example, if you want to babelify every `.js` file from `src` to `dist`:
+For example, if you want to babelify every `.js` file from `src` to `dist`, the `.on-save.json` file content could be:
 
 ```javascript
 [
@@ -43,10 +43,10 @@ In case your Babel CLI is local, maybe you would do something like this:
 
 ## Configuration file
 
-To use **on-save**, create an `.on-save.json` file at the root of your project. The content should be an array containing objects with the following properties:
+The content of the `.on-save.json` file must be an array containing objects with the following properties:
 
-- `srcDir` *(default: `'.'`)*: The source directory.
-- `destDir` *(default: `'.'`)*: The destination directory.
+- `srcDir` *(default to `.on-save.json`'s directory)*: The source directory.
+- `destDir` *(default to `srcDir`)*: The destination directory.
 - `files`: The files you want to track. You can use a glob, see [minimatch](https://github.com/isaacs/minimatch).
 - `command`: The command to execute. You can use these variables:
   - `${srcFile}`: The input file.
