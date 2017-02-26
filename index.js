@@ -56,7 +56,7 @@ export default {
 
   normalizeConfig({ srcDir, destDir, files, command }) {
     if (!srcDir) srcDir = '';
-    if (!destDir) destDir = '';
+    if (!destDir) destDir = srcDir;
     if (!files) throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     if (!Array.isArray(files)) files = [files];
     if (!command) throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
