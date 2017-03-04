@@ -21,14 +21,17 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "scripts": {
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prettier": "prettier --write --print-width=100 --single-quote --no-bracket-spacing index.js"
   },
   "dependencies": {
     "minimatch": "^3.0.3",
     "mkdirp": "^0.5.1"
   },
   "devDependencies": {
-    "eslint": "^3.16.0",
-    "eslint-config-next": "^0.2.4"
+    "eslint": "^3.17.0",
+    "eslint-config-prettier": "^1.4.1",
+    "eslint-config-xo-space": "^0.15.0",
+    "prettier": "^0.21.0"
   }
 }

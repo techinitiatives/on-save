@@ -1,9 +1,9 @@
 'use babel';
 
-import { existsSync, readFileSync } from 'fs';
-import { join, relative, dirname, extname } from 'path';
-import { exec } from 'child_process';
-import { CompositeDisposable } from 'atom';
+import {existsSync, readFileSync} from 'fs';
+import {join, relative, dirname, extname} from 'path';
+import {exec} from 'child_process';
+import {CompositeDisposable} from 'atom';
 import minimatch from 'minimatch';
 import mkdirp from 'mkdirp';
 
@@ -13,10 +13,11 @@ const EXEC_TIMEOUT = 60 * 1000; // 1 minute
 export default {
   activate() {
     this.subscriptions = new CompositeDisposable();
-
-    this.subscriptions.add(atom.workspace.observeTextEditors((textEditor) => {
-      this.subscriptions.add(textEditor.onDidSave(this.handleDidSave.bind(this)));
-    }));
+    this.subscriptions.add(
+      atom.workspace.observeTextEditors(textEditor => {
+        this.subscriptions.add(textEditor.onDidSave(this.handleDidSave.bind(this)));
+      })
+    );
   },
 
   deactivate() {
@@ -27,48 +28,67 @@ export default {
     let savedFile = event.path;
     const savedFileDir = dirname(savedFile);
     const rootDir = this.findRootDir(savedFileDir);
-    if (!rootDir) return;
+    if (!rootDir) {
+      return;
+    }
     savedFile = relative(rootDir, savedFile);
     const configs = this.loadConfigs(rootDir);
     for (const config of configs) {
-      this.run({ rootDir, config, savedFile });
+      this.run({rootDir, config, savedFile});
     }
   },
 
   findRootDir(dir) {
-    if (existsSync(join(dir, CONFIGS_FILENAME))) return dir;
+    if (existsSync(join(dir, CONFIGS_FILENAME))) {
+      return dir;
+    }
     const parentDir = join(dir, '..');
     if (parentDir === dir) {
       return undefined;
-    } else {
-      return this.findRootDir(parentDir);
     }
+    return this.findRootDir(parentDir);
   },
 
   loadConfigs(rootDir) {
     const configsFile = join(rootDir, CONFIGS_FILENAME);
     let configs = readFileSync(configsFile, 'utf8');
     configs = JSON.parse(configs);
-    if (!Array.isArray(configs)) configs = [configs];
-    configs = configs.map((config) => this.normalizeConfig(config));
+    if (!Array.isArray(configs)) {
+      configs = [configs];
+    }
+    configs = configs.map(config => this.normalizeConfig(config));
     return configs;
   },
 
-  normalizeConfig({ srcDir, destDir, files, command }) {
-    if (!srcDir) srcDir = '';
-    if (!destDir) destDir = srcDir;
-    if (!files) throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
-    if (!Array.isArray(files)) files = [files];
-    if (!command) throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
-    return { srcDir, destDir, files, command };
+  normalizeConfig({srcDir, destDir, files, command}) {
+    if (!srcDir) {
+      srcDir = '';
+    }
+    if (!destDir) {
+      destDir = srcDir;
+    }
+    if (!files) {
+      throw new Error("on-save: 'files' property is missing in '.on-save.json' configuration file");
+    }
+    if (!Array.isArray(files)) {
+      files = [files];
+    }
+    if (!command) {
+      throw new Error(
+        "on-save: 'command' property is missing in '.on-save.json' configuration file"
+      );
+    }
+    return {srcDir, destDir, files, command};
   },
 
-  run({ rootDir, savedFile, config }) {
-    const matched = config.files.find((glob) => {
+  run({rootDir, savedFile, config}) {
+    const matched = config.files.find(glob => {
       glob = join(config.srcDir, glob);
       return minimatch(savedFile, glob);
     });
-    if (!matched) return;
+    if (!matched) {
+      return;
+    }
 
     const srcFile = savedFile;
 
@@ -76,7 +96,6 @@ export default {
     destFile = join(config.destDir, destFile);
 
     const extension = extname(destFile);
-
     const destFileWithoutExtension = destFile.substr(0, destFile.length - extension.length);
 
     mkdirp.sync(join(rootDir, dirname(destFile)));
@@ -86,13 +105,13 @@ export default {
       destFile,
       destFileWithoutExtension
     });
-    const options = { cwd: rootDir, timeout: EXEC_TIMEOUT };
+    const options = {cwd: rootDir, timeout: EXEC_TIMEOUT};
     exec(command, options, (err, stdout, stderr) => {
-      if (!err) {
-        if (stdout) console.log(stdout.trim());
-      } else {
+      if (err) {
         const message = `on-save: An error occurred while running the command: ${command}`;
-        atom.notifications.addError(message, { detail: stderr, dismissable: true });
+        atom.notifications.addError(message, {detail: stderr, dismissable: true});
+      } else if (stdout) {
+        console.log(stdout.trim());
       }
     });
   },
