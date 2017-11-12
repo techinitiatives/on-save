@@ -34,7 +34,7 @@ The content of the `.on-save.json` file must be an array of objects with the fol
 
 - `srcDir` *(default to `.on-save.json`'s directory)*: The source directory.
 - `destDir` *(default to `srcDir`)*: The destination directory.
-- `files`: The files you want to track. You can use a glob (see [minimatch](https://github.com/isaacs/minimatch)).
+- `files`: The files you want to track. You can use a glob (see [minimatch](https://github.com/isaacs/minimatch)), or an array of globs.
 - `command`: The command to execute. You can use these variables:
   - `${srcFile}`: The input file.
   - `${destFile}`: The output file.
