@@ -1,7 +1,7 @@
 {
   "name": "on-save",
   "version": "2.1.0",
-  "description": "Run a shell command when you save a file (working and actively maintained package!)",
+  "description": "Run a shell command when you save a file",
   "keywords": [
     "save",
     "file",
