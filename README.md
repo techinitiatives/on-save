@@ -20,25 +20,27 @@ For example, if you want to babelify every `.js` file from `src` to `dist`, the 
 ```javascript
 [
   {
-    "srcDir": "src",
-    "destDir": "dist",
-    "files": "**/*.js",
-    "command": "babel ${srcFile} --out-file ${destFile}"
+    srcDir: 'src',
+    destDir: 'dist',
+    files: '**/*.js',
+    command: 'babel ${srcFile} --out-file ${destFile}'
   }
-]
+];
 ```
 
 ## Configuration file
 
 The content of the `.on-save.json` file must be an array of objects with the following properties:
 
-- `srcDir` *(default to `.on-save.json`'s directory)*: The source directory.
-- `destDir` *(default to `srcDir`)*: The destination directory.
-- `files`: The files you want to track. You can use a glob (see [minimatch](https://github.com/isaacs/minimatch)), or an array of globs.
-- `command`: The command to execute. You can use these variables:
-  - `${srcFile}`: The input file.
-  - `${destFile}`: The output file.
-  - `${destFileWithoutExtension}`: The output file without the extension.
+* `srcDir` _(default to `.on-save.json`'s directory)_: The source directory.
+* `destDir` _(default to `srcDir`)_: The destination directory.
+* `files`: The files you want to track. You can use a glob (see [minimatch](https://github.com/isaacs/minimatch)), or an array of globs.
+* `command`: The command to execute. You can use these variables:
+  * `${srcFile}`: The input file.
+  * `${destFile}`: The output file.
+  * `${destFileWithoutExtension}`: The output file without the extension.
+* `successMessage`: A message to display if the command is executed successfully.
+* `showOutput` _(default to `false`)_: A boolean indicating whether the output of the command should be shown or not.
 
 ## License
 

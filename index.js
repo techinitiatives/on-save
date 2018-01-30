@@ -13,11 +13,9 @@ const EXEC_TIMEOUT = 60 * 1000; // 1 minute
 export default {
   activate() {
     this.subscriptions = new CompositeDisposable();
-    this.subscriptions.add(
-      atom.workspace.observeTextEditors(textEditor => {
-        this.subscriptions.add(textEditor.onDidSave(this.handleDidSave.bind(this)));
-      })
-    );
+    this.subscriptions.add(atom.workspace.observeTextEditors(textEditor => {
+      this.subscriptions.add(textEditor.onDidSave(this.handleDidSave.bind(this)));
+    }));
   },
 
   deactivate() {
@@ -60,7 +58,7 @@ export default {
     return configs;
   },
 
-  normalizeConfig({srcDir, destDir, files, command}) {
+  normalizeConfig({srcDir, destDir, files, command, successMessage, showOutput}) {
     if (!srcDir) {
       srcDir = '';
     }
@@ -68,17 +66,18 @@ export default {
       destDir = srcDir;
     }
     if (!files) {
-      throw new Error("on-save: 'files' property is missing in '.on-save.json' configuration file");
+      throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     }
     if (!Array.isArray(files)) {
       files = [files];
     }
     if (!command) {
-      throw new Error(
-        "on-save: 'command' property is missing in '.on-save.json' configuration file"
-      );
+      throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
     }
-    return {srcDir, destDir, files, command};
+    if (!successMessage) {
+      successMessage = '';
+    }
+    return {srcDir, destDir, files, command, successMessage, showOutput};
   },
 
   run({rootDir, savedFile, config}) {
@@ -100,7 +99,7 @@ export default {
 
     mkdirp.sync(join(rootDir, dirname(destFile)));
 
-    const command = this.resolveCommand(config.command, {
+    const command = this.resolveVariables(config.command, {
       srcFile,
       destFile,
       destFileWithoutExtension
@@ -110,13 +109,18 @@ export default {
       if (err) {
         const message = `on-save: An error occurred while running the command: ${command}`;
         atom.notifications.addError(message, {detail: stderr, dismissable: true});
-      } else if (stdout) {
-        console.log(stdout.trim());
+      } else {
+        const message = config.successMessage;
+        const output = (stdout || '').trim();
+        const detail = config.showOutput ? output : undefined;
+        if (message || detail) {
+          atom.notifications.addSuccess(message, {detail, dismissable: true});
+        }
       }
     });
   },
 
-  resolveCommand(command, vars) {
+  resolveVariables(command, vars) {
     for (const key of Object.keys(vars)) {
       const value = vars[key];
       const regExp = new RegExp(`\\$\\{${key}\\}`, 'g');
