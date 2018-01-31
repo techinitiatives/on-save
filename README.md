@@ -39,8 +39,8 @@ The content of the `.on-save.json` file must be an array of objects with the fol
   * `${srcFile}`: The input file.
   * `${destFile}`: The output file.
   * `${destFileWithoutExtension}`: The output file without the extension.
-* `successMessage`: A message to display if the command is executed successfully.
-* `showOutput` _(default to `false`)_: A boolean indicating whether the output of the command should be shown or not.
+* `showOutput` _(default to `false`)_: A boolean indicating whether the output stream (stdout) should be displayed or not.
+* `showError` _(default to `true`)_: A boolean indicating whether the error stream (stderr) should be displayed or not.
 
 ## License
 

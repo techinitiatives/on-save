@@ -2,7 +2,6 @@
   {
     "files": "*",
     "command": "ls -la",
-    "successMessage": "Success!",
     "showOutput": true
   }
 ]

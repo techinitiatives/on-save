@@ -58,13 +58,14 @@ export default {
     return configs;
   },
 
-  normalizeConfig({srcDir, destDir, files, command, successMessage, showOutput}) {
-    if (!srcDir) {
-      srcDir = '';
-    }
-    if (!destDir) {
-      destDir = srcDir;
-    }
+  normalizeConfig({
+    srcDir = '',
+    destDir = srcDir,
+    files,
+    command,
+    showOutput = false,
+    showError = true
+  }) {
     if (!files) {
       throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
     }
@@ -74,10 +75,7 @@ export default {
     if (!command) {
       throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
     }
-    if (!successMessage) {
-      successMessage = '';
-    }
-    return {srcDir, destDir, files, command, successMessage, showOutput};
+    return {srcDir, destDir, files, command, showOutput, showError};
   },
 
   run({rootDir, savedFile, config}) {
@@ -104,18 +102,20 @@ export default {
       destFile,
       destFileWithoutExtension
     });
+
     const options = {cwd: rootDir, timeout: EXEC_TIMEOUT};
+
     exec(command, options, (err, stdout, stderr) => {
-      if (err) {
-        const message = `on-save: An error occurred while running the command: ${command}`;
-        atom.notifications.addError(message, {detail: stderr, dismissable: true});
-      } else {
-        const message = config.successMessage;
-        const output = (stdout || '').trim();
-        const detail = config.showOutput ? output : undefined;
-        if (message || detail) {
-          atom.notifications.addSuccess(message, {detail, dismissable: true});
-        }
+      const message = 'on-save';
+
+      const output = stdout.trim();
+      if (config.showOutput && output) {
+        atom.notifications.addSuccess(message, {detail: output, dismissable: true});
+      }
+
+      const error = stderr.trim() || (err && err.message);
+      if (config.showError && error) {
+        atom.notifications.addError(message, {detail: error, dismissable: true});
       }
     });
   },
