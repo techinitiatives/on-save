@@ -15,17 +15,17 @@ apm install on-save
 
 Create an `.on-save.json` file at the root of your project (or anywhere in the path of the files you want to watch).
 
-For example, if you want to babelify every `.js` file from `src` to `dist`, the `.on-save.json` file content would be:
+For example, if you want to babelify every `.js` file from `src` to `dist`, the `.on-save.json` file content might be something like:
 
-```javascript
+```json
 [
   {
-    srcDir: 'src',
-    destDir: 'dist',
-    files: '**/*.js',
-    command: 'babel ${srcFile} --out-file ${destFile}'
+    "srcDir": "src",
+    "destDir": "dist",
+    "files": "**/*.js",
+    "command": "babel ${srcFile} --out-file ${destFile}"
   }
-];
+]
 ```
 
 ## Configuration file
