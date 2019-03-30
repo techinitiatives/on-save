@@ -64,7 +64,8 @@ export default {
     files,
     command,
     showOutput = false,
-    showError = true
+    showError = true,
+    notificationDismissable = true
   }) {
     if (!files) {
       throw new Error('on-save: \'files\' property is missing in \'.on-save.json\' configuration file');
@@ -75,7 +76,7 @@ export default {
     if (!command) {
       throw new Error('on-save: \'command\' property is missing in \'.on-save.json\' configuration file');
     }
-    return {srcDir, destDir, files, command, showOutput, showError};
+    return {srcDir, destDir, files, command, showOutput, showError, notificationDismissable};
   },
 
   run({rootDir, savedFile, config}) {
@@ -110,12 +111,12 @@ export default {
 
       const output = stdout.trim();
       if (config.showOutput && output) {
-        atom.notifications.addSuccess(message, {detail: output, dismissable: true});
+        atom.notifications.addSuccess(message, {detail: output, dismissable: config.notificationDismissable});
       }
 
       const error = stderr.trim() || (err && err.message);
       if (config.showError && error) {
-        atom.notifications.addError(message, {detail: error, dismissable: true});
+        atom.notifications.addError(message, {detail: error, dismissable: config.notificationDismissable});
       }
     });
   },
